@@ -70,21 +70,19 @@ function HeroPost({
 export default async function Page() {
   const { isEnabled } = draftMode();
   const allPosts = await getAllPosts(isEnabled);
-  const heroPost = allPosts[0];
-  const morePosts = allPosts.slice(1);
 
   return (
     <div className="container mx-auto px-5">
-      {heroPost && (
+      {allPosts.map((post) => (
         <HeroPost
-          title={heroPost.title}
-          coverImage={heroPost.coverImage}
-          date={heroPost.date}
-          author={heroPost.author}
-          slug={heroPost.slug}
-          excerpt={heroPost.excerpt}
+          title={post.title}
+          coverImage={post.coverImage}
+          date={post.date}
+          author={post.author}
+          slug={post.slug}
+          excerpt={post.excerpt}
         />
-      )}
+      ))}
     </div>
   );
 }
