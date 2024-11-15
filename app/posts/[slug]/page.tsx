@@ -15,40 +15,28 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PostPage({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams: { skipCache: string }
-}) {
+export default async function PostPage({ params, searchParams }: { params: { slug: string }; searchParams: { skipCache: string } }) {
   // Enable Draft Mode by setting the cookie
   draftMode().enable();
 
   const { isEnabled } = draftMode();
   const skipCache = searchParams.skipCache === "true";
-  const { post } = await getPostAndMorePosts(params.slug, isEnabled, skipCache);
+  let data = await fetch(`http://localhost:3000/api/posts/${params.slug}?isDraftMode=${isEnabled}&skipCache=${skipCache}`);
+  let { post } = await data.json();
+  // const { post } = await getPostAndMorePosts(params.slug, isEnabled, skipCache);
 
   return (
     <div className="container mx-auto px-5">
       <article>
-        <h1 className="mb-8 text-center text-6xl font-bold leading-tight tracking-tighter md:text-left md:text-7xl md:leading-none lg:text-8xl">
+        <h1 className="mb-8 text-center text-3xl font-bold leading-tight tracking-tighter md:text-left md:text-4xl md:leading-none lg:text-5xl">
           {post.title}
         </h1>
-        <div className="hidden md:mb-8 md:block">
-          {post.author && (
-            <Avatar name={post.author.name} picture={post.author.picture} />
-          )}
-        </div>
+        <div className="hidden md:mb-8 md:block">{post.author && <Avatar name={post.author.name} picture={post.author.picture} />}</div>
         <div className="mb-8 sm:mx-0 md:mb-8">
           <CoverImage title={post.title} url={post.coverImage.url} />
         </div>
         <div className="mx-auto max-w-2xl">
-          <div className="mb-6 block md:hidden">
-            {post.author && (
-              <Avatar name={post.author.name} picture={post.author.picture} />
-            )}
-          </div>
+          <div className="mb-6 block md:hidden">{post.author && <Avatar name={post.author.name} picture={post.author.picture} />}</div>
           <div className="mb-6 text-lg">
             <Date dateString={post.date} />
           </div>

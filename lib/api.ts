@@ -31,16 +31,26 @@ export const POST_GRAPHQL_FIELDS = `
   }
 `;
 
-export async function fetchGraphQL(query: string, preview = false): Promise<any> {
-  return fetch(`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${preview ? process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN : process.env.CONTENTFUL_ACCESS_TOKEN}`,
-    },
-    body: JSON.stringify({ query }),
-    next: { tags: ["posts"] },
-  }).then((response) => response.json());
+export async function fetchGraphQL(
+  query: string,
+  preview = false
+): Promise<any> {
+  return fetch(
+    `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${
+          preview
+            ? process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN
+            : process.env.CONTENTFUL_ACCESS_TOKEN
+        }`,
+      },
+      body: JSON.stringify({ query }),
+      next: { tags: ["posts"] },
+    }
+  ).then((response) => response.json());
 }
 
 export function extractPost(fetchResponse: any): Post {
@@ -65,7 +75,7 @@ export async function getPreviewPostBySlug(slug: string | null): Promise<any> {
   return extractPost(entry);
 }
 
-export async function getAllPosts(isDraftMode: boolean): Promise<any[]> {
+export async function getAllPosts(isDraftMode: boolean): Promise<Post[]> {
   const entries = await fetchGraphQL(
     `query {
       postCollection(where: { slug_exists: true }, order: date_DESC, preview: ${
@@ -76,21 +86,28 @@ export async function getAllPosts(isDraftMode: boolean): Promise<any[]> {
         }
       }
     }`,
-    isDraftMode,
+    isDraftMode
   );
   return extractPostEntries(entries);
 }
 
-export async function getPostAndMorePosts(slug: string, preview: boolean, skipCache: boolean): Promise<any> {
+export async function getPostAndMorePosts(
+  slug: string,
+  preview: boolean,
+  skipCache: boolean
+): Promise<any> {
   const post = await cachedClient.fetch(
     {
-      slug, preview
+      slug,
+      preview,
     },
     { fresh: skipCache }
   );
   const entries = await fetchGraphQL(
     `query {
-      postCollection(where: { slug_not_in: "${slug}" }, order: date_DESC, preview: ${preview ? "true" : "false"}, limit: 2) {
+      postCollection(where: { slug_not_in: "${slug}" }, order: date_DESC, preview: ${
+      preview ? "true" : "false"
+    }, limit: 2) {
         items {
           ${POST_GRAPHQL_FIELDS}
         }

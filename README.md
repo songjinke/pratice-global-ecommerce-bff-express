@@ -1,18 +1,26 @@
-# A multi-layer cache solution example
+# A SSR & BFF solution example
 
-This example showcases the multiple layer cache solution using [Next.js](https://nextjs.org/docs) and [Contentful](https://www.contentful.com/) as the data source.
+This example showcases the SSR & BFF solution using [Next.js](https://nextjs.org/) and [Express.js](https://expressjs.com/).
 
 ## Demo
 
-### http://localhost:3000/posts/awesome
+### http://localhost:3000
 
 ## Questions
-- What are the benefits of a multi-layered caching architecture?
-- Any other cache layers can be introduced?
-- How to define the TTL in each layer?
-- The possible problems during production releases?
-- The possible problems for CMS team / QA team / Dev team?
-- How to improve the solution if global distribution is not required?
+
+- What are SPA, CSR, SSR, SSG?
+- Vue vs React
+- What are the benefits of BFF architecture?
+- Next.js vs Express.js
+- What is `__NEXT_DATA__` or `__next_f`?
+- How to debug client side rendering code?
+- How to debug server side rendering code?
+- How to scale it up?
 
 ## References
-- [Draft Mode](https://nextjs.org/docs/app/building-your-application/configuring/draft-mode)
+
+- Vue vs React: https://v2.vuejs.org/v2/guide/comparison#React
+- React Learn: https://react.dev/learn
+- Next.js Docs: https://nextjs.org/docs
+- Express.js Getting Started: https://expressjs.com/en/starter/installing.html
+- Corporate Learn Portal
